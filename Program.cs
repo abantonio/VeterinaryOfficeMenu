@@ -27,8 +27,8 @@ namespace VeterinaryOffice{
             }
 
             //Initialize VetOffice object and set the name
-            VetOffice vetOffice = new VetOffice();
-            vetOffice.Name = vetName;
+            VetOffice myVetOffice = new VetOffice();
+            myVetOffice.Name = vetName;
             
             //Pause to simulate loading
             for(int i = 0; i < 3; i++){
@@ -47,15 +47,15 @@ namespace VeterinaryOffice{
                 Console.WriteLine("0. Quit Program");
                 Console.Write("\nChoose action: ");
                 var choiceMainMenu = Console.ReadLine();
-                while(choiceMainMenu == null || choiceMainMenu == ""){
-                    Console.Write("Invalid input\nChoose an action: ");
-                    choiceMainMenu = Console.ReadLine();
-                }
+                // while(choiceMainMenu == null || choiceMainMenu == ""){
+                //     Console.Write("Invalid input\nChoose an action: ");
+                //     choiceMainMenu = Console.ReadLine();
+                // }
 
                 switch(choiceMainMenu){
                     case "1":
                         Console.WriteLine("Add customer");
-                        addCustomer();
+                        addCustomer(myVetOffice);
                         break;
                     case "2":
                         Console.WriteLine("Customer lookup");
@@ -75,23 +75,55 @@ namespace VeterinaryOffice{
                 
                 go = !(choiceMainMenu == "0");
             }
-            // if(choiceMainMenu == "00"){
-            //     Console.WriteLine("1. View All Customer Information");
-            //     Console.WriteLine("2. View All Owners");
-            //     Console.WriteLine("3. View All Animals");
-            // }
+            
         }
 
-        private static void addCustomer(){
+        private static string ValidateStringInput(){
+            var input = Console.ReadLine();
+            while(input == null || input == ""){
+                Console.Write("Input cannot be blank or null\nPlease try again: ");
+                input = Console.ReadLine();
+            }
+            return input;
+        }
+
+        private static void addCustomer(VetOffice myVetOffice){
+            string ownerName;
+            string ownerAddress;
+            string newPetName;
+            string newPetType;
             Console.WriteLine("Please choose:");
-            Console.WriteLine("1. Add Owner");
-            Console.WriteLine("2. Add Pet");
+            Console.WriteLine("1. Add new owner and pet");
+            Console.WriteLine("2. Add pet to existing owner");
             Console.WriteLine("\n0. Return to Main Menu");
             Console.Write("Choice: ");
             var choiceAddMenu = Console.ReadLine();
             while(choiceAddMenu == null || choiceAddMenu == ""){
                 Console.Write("Invalid input\nChoice: ");
                 choiceAddMenu = Console.ReadLine();
+            }
+
+            switch(choiceAddMenu){
+                case "1":
+                    Console.Write("Enter owner name: ");
+                    ownerName = ValidateStringInput();
+                    Console.Write("Enter owner address: ");
+                    ownerAddress = ValidateStringInput();
+                    Owner newOwner = new Owner(ownerName, ownerAddress);
+                    Console.Write("Enter pet name: ");
+                    newPetName = ValidateStringInput();
+                    Console.Write("Enter pet type: ");
+                    newPetType = ValidateStringInput();
+                    Pet newPet = new Pet(newPetName, newPetType);
+                    myVetOffice.AddCustomer(newOwner, newPet);
+                    break;
+                case "2":
+                    Console.WriteLine("Choice under development");
+                    //Console.Write("Enter owner name: ");
+                    break;
+                default:
+                    Console.WriteLine("Choice under development");
+                    break;
             }
             return;
         }
